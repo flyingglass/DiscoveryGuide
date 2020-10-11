@@ -68,67 +68,6 @@ public class MyZuulStrategyRouteFilter extends DefaultZuulStrategyRouteFilter {
         return super.getRouteVersion();
     }
 
-    // 自定义根据Parameter全链路区域匹配路由
-    @Override
-    public String getRouteRegion() {
-        String user = strategyContextHolder.getParameter("user");
-
-        LOG.info("自定义根据Parameter全链路区域匹配路由, Parameter user={}", user);
-
-        if (StringUtils.equals(user, "zhangsan")) {
-            LOG.info("执行全链路区域匹配路由={}", aRouteRegion);
-
-            return aRouteRegion;
-        } else if (StringUtils.equals(user, "lisi")) {
-            LOG.info("执行全链路区域匹配路由={}", bRouteRegion);
-
-            return bRouteRegion;
-        }
-
-        return super.getRouteRegion();
-    }
-
-    // 自定义根据Cookie全链路IP地址和端口匹配路由
-    @Override
-    public String getRouteAddress() {
-        String user = strategyContextHolder.getCookie("user");
-
-        LOG.info("自定义根据Cookie全链路IP地址和端口匹配路由, Cookie user={}", user);
-
-        if (StringUtils.equals(user, "zhangsan")) {
-            LOG.info("执行全链路IP地址和端口匹配路由={}", aRouteAddress);
-
-            return aRouteAddress;
-        } else if (StringUtils.equals(user, "lisi")) {
-            LOG.info("执行全链路IP地址和端口匹配路由={}", bRouteAddress);
-
-            return bRouteAddress;
-        }
-
-        return super.getRouteEnvironment();
-    }
-
-    @Autowired
-    private ZuulStrategyContextHolder zuulStrategyContextHolder;
-
-    // 自定义根据域名全链路环境隔离
-    @Override
-    public String getRouteEnvironment() {
-        String requestURL = zuulStrategyContextHolder.getRequestURL();
-        if (requestURL.contains("nepxion.com")) {
-            LOG.info("自定义根据域名全链路环境隔离, URL={}", requestURL);
-
-            String host = requestURL.substring("http://".length(), requestURL.length());
-            String environment = host.substring(0, host.indexOf("."));
-
-            LOG.info("执行全链路环境隔离={}", environment);
-
-            return environment;
-        }
-
-        return super.getRouteEnvironment();
-    }
-
     // 自定义全链路版本权重路由
     /*@Override
     public String getRouteVersion() {
